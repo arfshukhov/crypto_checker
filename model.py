@@ -20,6 +20,13 @@ Base = declarative_base()
 
 # Модель для хранения данных о цене криптовалют
 class Price(Base):
+    """
+    Модель данных для хранения цен криптовалют.
+    :param id: Уникальный идентификатор записи.
+    :param ticker: Тикер криптовалюты.
+    :param price: Цена криптовалюты.
+    :param timestamp: Временная метка цены.
+    """
     __tablename__ = "prices"
     id = Column(Integer, primary_key=True, index=True)
     ticker = Column(String, index=True)

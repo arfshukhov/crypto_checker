@@ -3,9 +3,16 @@ from model import *
 import asyncio
 
 class Reader:
-
+    """
+    Класс Reader для работы с данными цен криптовалют.
+    """
     @classmethod
     async def get_price_by_ticker(cls, ticker):
+        """
+        Получает все цены по заданному тикеру
+        :param ticker: Тикер криптовалюты (например, 'btc_usdt').
+        :return: Словарь с ценами и количеством записей.
+        """
         async with async_session() as session:
             result = await session.execute(select(Price).filter(Price.ticker == ticker))
             prices = result.scalars().all()
@@ -22,6 +29,11 @@ class Reader:
 
     @classmethod
     async def get_last_price_by_ticker(cls, ticker):
+        """
+        Получает последнюю цену по заданному тикеру
+        :param ticker: Тикер криптовалюты (например, 'btc_usdt').
+        :return: Словарь с последней ценой и временной меткой.
+        """
         async with async_session() as session:
             result = await session.execute(
                 select(Price).filter(Price.ticker == ticker)
@@ -34,6 +46,13 @@ class Reader:
 
     @classmethod
     async def get_by_date(cls, ticker, from_date, to_date):
+        """
+        Получает цены по заданному тикеру за указанный диапазон дат
+        :param ticker: Тикер криптовалюты (например, 'btc_usdt').
+        :param from_date: Начальная дата в формате 'YYYY-MM-DD'.
+        :param to_date: Конечная дата в формате 'YYYY-MM-DD'.
+        :return: Словарь с ценами и количеством записей за указанный период.
+        """
         async with async_session() as session:
             result = await session.execute(
                 select(Price).filter(Price.ticker == ticker, Price.timestamp.between(from_date, to_date))
